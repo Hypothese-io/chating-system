@@ -4,7 +4,7 @@ const http = require('http');
 const server = http.createServer(app);
 const { Server } = require("socket.io");
 const io = new Server(server, { cors: { origin: "*" } });
-const mysql = require("mysql");
+const mysql = require("mysql"); 
 
 const connection = mysql.createConnection({
     "host": "localhost",
