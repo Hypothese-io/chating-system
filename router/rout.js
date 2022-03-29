@@ -10,4 +10,4 @@ router.post('/insert_wallet_details', walletController.insertWalletDetails);
 router.post('/update_wallet_details', walletController.updateWalletDetails);
 router.post('/single_wallet_details', walletController.singleWalletDetails);
 
-module.exports = router;
+module.exports = router; 
