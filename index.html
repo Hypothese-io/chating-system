@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Socket.IO chat</title>
+    <script src="https://cdn.socket.io/socket.io-3.0.1.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+</head>
+
+<body>
+    <input type="text" class="message">
+    <button onclick="sendMessage()">Send message</button>
+    <br>
+    <ul id="users"></ul>
+    <br>
+    <input type="text" class="send_message">
+    <button onclick="sendMessageTwo()">message</button>
+    <ul id="messageShow"></ul>
+
+    <script>
+        const socket = io('http://localhost:3000');
+        var receiver = "";
+        var sender = "";
+        socket.on('connection')
+
+        const sendMessage = () => {
+            const messageInput = document.querySelector('.message');
+            const messageVal = messageInput.value;
+            socket.emit('message', messageVal)
+            sender = messageVal;
+        }
+
+        socket.on('message', (data) => {
+            var html = "";
+            html += "<li><button onclick='onUserSelected(this.innerHTML);'>" + data + "</button></li>";
+            document.getElementById("users").innerHTML += html;
+        });
+
+        function onUserSelected(username) {
+            receiver = username;
+        }
+
+        const sendMessageTwo = () => {
+            const messageData = document.querySelector('.send_message').value;
+            socket.emit('send_message', {
+                sender: sender,
+                receiver: receiver,
+                message: messageData
+            });
+
+            var html = "";
+            html += "<li>You said: " + messageData + "</li>";
+
+            document.getElementById("messageShow").innerHTML += html;
+
+        }
+
+        socket.on('send_message', (data) => {
+            var html = "";
+            html += "<li>" + data + "</li>";
+
+            document.getElementById("userstwo").innerHTML += html;
+        });
+
+        socket.on("new_message", (data) => {
+            var html = "";
+            html += "<li>" + data.sender + " says: " + data.message + "</li>";
+            document.getElementById("messageShow").innerHTML += html;
+        })
+    </script>
+
+</body>
+
+</html>
