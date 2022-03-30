@@ -52,13 +52,11 @@
             html += "<li>You said: " + messageData + "</li>";
 
             document.getElementById("messageShow").innerHTML += html;
-
         }
 
         socket.on('send_message', (data) => {
             var html = "";
             html += "<li>" + data + "</li>";
-
             document.getElementById("userstwo").innerHTML += html;
         });
 

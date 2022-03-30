@@ -63,14 +63,12 @@ exports.singleWalletDetails = async (req, res) => {
     let where_user = { wallet_address: postData.wallet_address }
     let result_user = await walletModel.findOne(where_user);
 
-    if(result_user != null && result_user != '')
-    {
-        outputJson = {code: 200, status: "Success", message: 'Wallet Available',result:result_user};
+    if (result_user != null && result_user != '') {
+        outputJson = { code: 200, status: "Success", message: 'Wallet Available', result: result_user };
         res.json(outputJson);
     }
-    else
-    {
-        outputJson = {code: 400, status: "faild", message: 'Wallet Not Available'};
+    else {
+        outputJson = { code: 400, status: "faild", message: 'Wallet Not Available' };
         res.json(outputJson);
     }
 }

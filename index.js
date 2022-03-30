@@ -7,18 +7,10 @@ const io = new Server(server, { cors: { origin: "*" } });
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const cors = require("cors");
+const { connect } = require("./db")
 const socketModel = require("./model/socketModel");
 
-mongoose.connect('mongodb://localhost:27017/user', {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-}, (err) => {
-    if (err) {
-        console.log('connection err', err);
-    } else {
-        console.log('Database connected');
-    }
-});
+connect();
 
 app.get('/', (req, res) => {
     res.sendFile(__dirname + '/index.html');
@@ -51,7 +43,7 @@ io.on('connection', (socket) => {
         io.emit('message', data);
     });
 
-    socket.on("send_message", (data) => {
+    socket.on("send_message", async (data) => {
         var socketId = user[data.receiver];
         io.to(socketId).emit("new_message", data);
 
@@ -60,13 +52,13 @@ io.on('connection', (socket) => {
             receiver: data.receiver,
             message: data.message,
         });
-    
+
         //save in database
         const userdata = await user.save();
-        console.log("userdata==>",userdata);
+        console.log("userdata==>", userdata);
     });
 });
 
-server.listen(3000, () => {
-    console.log('App running in port : 3000');
+server.listen(8000, () => {
+    console.log('App running in port : 8000');
 });
